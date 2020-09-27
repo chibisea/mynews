@@ -10,7 +10,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         {{-- 各ページごとにtitleタグを入れるために@yieldで空けておきます。 --}}
-        <title>profile create</title>
+        <title>@yield('title')</title>
 
         <!-- Scripts -->
          {{-- Laravel標準で用意されているJavascriptを読み込みます --}}
@@ -24,7 +24,7 @@
         {{-- Laravel標準で用意されているCSSを読み込みます --}}
         <link href="{{ secure_asset('css/app.css') }}" rel="stylesheet">
         {{-- この章の後半で作成するCSSを読み込みます --}}
-        <link href="{{ secure_asset('css/profile.css') }}" rel="stylesheet">
+        <link href="{{ secure_asset('css/admin.css') }}" rel="stylesheet">
     </head>
     <body>
         <div id="app">
@@ -53,7 +53,8 @@
             {{-- ここまでナビゲーションバー --}}
 
             <main class="py-4">
-               <h1>プロフィール作成</h1>
+                {{-- コンテンツをここに入れるため、@yieldで空けておきます。 --}}
+                @yield('content')
             </main>
         </div>
     </body>
