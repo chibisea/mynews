@@ -1,9 +1,12 @@
 <?php
 
-namespace APP\Http\Controller\Admin;
+namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Profile;
+use Carbon\Carbon;
+use App\ProfileHistory;
 
 class ProfileController extends Controller
 {
@@ -24,7 +27,7 @@ class ProfileController extends Controller
         return redirect('admin/profile/create');
     }
     
-    public function edit()
+    public function edit(Request $request)
     {
         $profile = Profile::find($request->id);
         if(empty($profile)){
@@ -33,12 +36,16 @@ class ProfileController extends Controller
         return view('admin.profile.edit', ['profile_form' =>$profile]);
     }
     
-    public function update()
+    public function update(Request $request)
     {
         $this->validate($request, Profile::$rules);
         $profile = Profile::find($request->id);
         $profile_form = $request->all();
         unset($profile_form['_token']);
-        return redirect('admin/profile/edit');
+        $profilehistory = new ProfileHistory;
+        $profilehistory->profile_id = $profile->id;
+        $profilehistory->edited_at = Carbon::now();
+        $profilehistory->save();
+        return redirect()->route('profile.edit', ['id' => $request->id]);
     }
 }
